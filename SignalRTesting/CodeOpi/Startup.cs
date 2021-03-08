@@ -1,3 +1,4 @@
+using CodeOpi.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -24,6 +25,7 @@ namespace CodeOpi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +44,10 @@ namespace CodeOpi
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            //app.UseSignalR(config => {
+            //    config.MapHub<MessageHub>("/messages");
+            //});
+
             app.UseRouting();
 
             app.UseAuthorization();
@@ -51,6 +57,7 @@ namespace CodeOpi
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<MessageHub>("/messages");
             });
         }
     }
