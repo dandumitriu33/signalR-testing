@@ -12,5 +12,15 @@ namespace CodeOpi.Hubs
         {
             return Clients.All.SendAsync("ReceiveMessage", message);
         }
+
+        public override Task OnConnectedAsync()
+        {
+            return base.OnConnectedAsync(); 
+        }
+
+        public override Task OnDisconnectedAsync(Exception exception)
+        {
+            return base.OnDisconnectedAsync(exception);
+        }
     }
 }
