@@ -13,6 +13,11 @@ namespace CodeOpi.Hubs
             return Clients.All.SendAsync("ReceiveMessage", message);
         }
 
+        public Task SendMessageToCaller(string message)
+        {
+            return Clients.Caller.SendAsync("ReceiveMessage", message);
+        }
+
         public override Task OnConnectedAsync()
         {
             return base.OnConnectedAsync(); 
