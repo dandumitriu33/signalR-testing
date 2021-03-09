@@ -18,14 +18,21 @@ namespace CodeOpi.Hubs
             return Clients.Caller.SendAsync("ReceiveMessage", message);
         }
 
-        public override Task OnConnectedAsync()
+        public Task SendMessageToUser(string connectionId, string message)
         {
-            return base.OnConnectedAsync(); 
+            return Clients.Client(connectionId).SendAsync("ReceiveMessage", message);
         }
 
-        public override Task OnDisconnectedAsync(Exception exception)
+        public override async Task OnConnectedAsync()
         {
-            return base.OnDisconnectedAsync(exception);
+            await Clients.All.SendAsync("UserConnected", Context.ConnectionId);
+            await base.OnConnectedAsync(); 
+        }
+
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            await Clients.All.SendAsync("UserDisconnected", Context.ConnectionId);
+            await base.OnDisconnectedAsync(exception);
         }
     }
 }
